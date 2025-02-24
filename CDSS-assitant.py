@@ -1,4 +1,3 @@
-import os
 import streamlit as st
 from openai import OpenAI
 import base64
@@ -17,6 +16,7 @@ API_KEY = st.secrets["API_KEY"]
 if API_KEY is None:
     st.error("🚨 API key not found. Please check your secrets.toml file.")
 else:
+    st.success("✅ API key loaded successfully.")
     client = OpenAI(api_key=API_KEY)
 
 # Custom CSS for UI Enhancement
@@ -33,14 +33,13 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Title and Subtitle
-st.markdown(
-    "<h1 style='text-align: center; color: #2E86C1;'>🧠 LLM-Powered Clinical Decision Support for Psychiatrists</h1>", 
-    unsafe_allow_html=True
-)
-st.markdown(
-    "<h4 style='text-align: center; color: #555;'>Using Maudsley Guidelines, DSM-5 & ICD-10 for Evidence-Based Recommendations</h4>", 
-    unsafe_allow_html=True
-)
+st.markdown("<h1 style='text-align: center; color: #2E86C1;'>🧠 LLM-Powered Clinical Decision Support for Psychiatrists</h1>", unsafe_allow_html=True)
+st.markdown("<h4 style='text-align: center; color: #555;'>Using Maudsley Guidelines, DSM-5 & ICD-10 for Evidence-Based Recommendations</h4>", unsafe_allow_html=True)
+
+# Initialize session state for patient history
+if "patient_history" not in st.session_state:
+    st.session_state.patient_history = []
+
 # Input Section
 st.markdown("### 📋 Enter Patient Symptoms & Clinical History")
 
@@ -98,7 +97,7 @@ medications = st.text_area("💊 Current Medications & Past Treatments (Optional
 
 # Button to Generate Recommendations
 st.markdown("---")
-st.markdown("<h3 style='text-align: center;'> Get AI-Powered Recommendations</h3>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center;'>🚀 Get AI-Powered Recommendations</h3>", unsafe_allow_html=True)
 
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
@@ -110,13 +109,13 @@ with col2:
                 # Prepare the prompt for the LLM
                 prompt = f"""
                 You are an AI-powered clinical assistant for psychiatrists. 
-                Based on the DSM-5, Maudsley guidelines, and ICD-10 codes, 
+                Based on the DSM-5, Maudsley Prescribing Guidelines, and ICD-10 codes, 
                 provide a structured response including:
 
                 **1. Likely Diagnosis**  
                 **2. Differential Diagnoses**  
                 **3. Clinical Reasoning**  
-                **4. Recommended Treatment Plan (Medication + Therapy)**  
+                **4. Recommended Treatment Plan (Based on Maudsley Guidelines)**  
                 **5. ICD-10 Code**  
                 **6. Any Red Flags Requiring Urgent Referral**  
 
@@ -134,32 +133,51 @@ with col2:
                 )
                 recommendations = response.choices[0].message.content
 
+                # Save the initial recommendations to patient history
+                st.session_state.patient_history.append({"role": "AI", "content": recommendations})
+
             # Display Recommendations
             st.markdown("---")
             st.markdown("<h2 style='text-align: center;'>📜 AI-Powered Recommendations</h2>", unsafe_allow_html=True)
             st.success("✅ Analysis Complete!")
+            st.write(recommendations)
 
-            # Allow doctors to edit the recommendations
-            st.markdown("#### ✏️ Edit Recommendations (if needed)")
-            edited_recommendations = st.text_area("Edit the recommendations below:", value=recommendations, height=400)
+# Interactive Follow-Up Questions
+st.markdown("---")
+st.markdown("<h3 style='text-align: center;'>❓ Ask Follow-Up Questions</h3>", unsafe_allow_html=True)
 
-            # Save or export the recommendations
-            st.markdown("#### 💾 Save or Export Recommendations")
-            col1, col2 = st.columns(2)
-            with col1:
-                if st.button("📥 Save to Patient Record"):
-                    # Simulate saving to a database or EHR
-                    st.success("✅ Recommendations saved to patient record.")
-            with col2:
-                # Export as PDF
-                pdf_data = base64.b64encode(edited_recommendations.encode()).decode()
-                pdf_download_link = f'<a href="data:application/pdf;base64,{pdf_data}" download="recommendations.pdf">📄 Download as PDF</a>'
-                st.markdown(pdf_download_link, unsafe_allow_html=True)
+follow_up_question = st.text_input("Ask a question about the recommendations:")
+if follow_up_question:
+    with st.spinner("🔍 Generating response..."):
+        # Add the follow-up question to patient history
+        st.session_state.patient_history.append({"role": "Doctor", "content": follow_up_question})
 
-            # Feedback Section
-            st.markdown("#### 📝 Provide Feedback")
-            feedback = st.radio("Was this recommendation helpful?", ["👍 Yes", "👎 No"])
-            if feedback == "👎 No":
-                feedback_details = st.text_area("Please provide additional details:")
-                if st.button("Submit Feedback"):
-                    st.success("✅ Thank you for your feedback! We'll use it to improve the system.")
+        # Prepare the follow-up prompt
+        follow_up_prompt = f"""
+        The doctor has asked the following question about your recommendations:
+        {follow_up_question}
+
+        Please provide a detailed and clear response.
+        """
+        follow_up_response = client.chat.completions.create(
+            model="gpt-4",
+            messages=[{"role": "user", "content": follow_up_prompt}]
+        )
+        follow_up_answer = follow_up_response.choices[0].message.content
+
+        # Save the follow-up response to patient history
+        st.session_state.patient_history.append({"role": "AI", "content": follow_up_answer})
+
+    # Display Follow-Up Response
+    st.markdown("---")
+    st.markdown("<h4 style='text-align: center;'>📝 Follow-Up Response</h4>", unsafe_allow_html=True)
+    st.write(follow_up_answer)
+
+# Display Patient History
+st.markdown("---")
+st.markdown("<h3 style='text-align: center;'>📚 Patient History</h3>", unsafe_allow_html=True)
+for entry in st.session_state.patient_history:
+    if entry["role"] == "AI":
+        st.markdown(f"**🤖 AI:** {entry['content']}")
+    else:
+        st.markdown(f"**👨‍⚕️ Doctor:** {entry['content']}")
