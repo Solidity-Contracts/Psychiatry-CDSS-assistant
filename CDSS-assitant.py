@@ -65,7 +65,7 @@ if st.button("Get Recommendations"):
             Patient Symptoms: {", ".join(symptoms)}
             Additional Notes: {additional_notes}
             """
-            response = openai.ChatCompletion.create(
+            response =  client.chat.completions.create(
                 model="gpt-4",  # or "gpt-3.5-turbo"
                 messages=[{"role": "user", "content": prompt}]
             )
