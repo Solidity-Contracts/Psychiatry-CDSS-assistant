@@ -34,7 +34,7 @@ st.markdown("""
 
 # Title and Subtitle
 st.markdown(
-    "<h1 style='text-align: center; color: #2E86C1;'>🧠 AI-Powered Clinical Decision Support for Psychiatrists</h1>", 
+    "<h1 style='text-align: center; color: #2E86C1;'>🧠 LLM-Powered Clinical Decision Support for Psychiatrists</h1>", 
     unsafe_allow_html=True
 )
 st.markdown(
