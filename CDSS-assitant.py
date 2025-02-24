@@ -98,7 +98,7 @@ medications = st.text_area("💊 Current Medications & Past Treatments (Optional
 
 # Button to Generate Recommendations
 st.markdown("---")
-st.markdown("<h3 style='text-align: center;'>🚀 Get AI-Powered Recommendations</h3>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center;'> Get AI-Powered Recommendations</h3>", unsafe_allow_html=True)
 
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
