@@ -2,8 +2,8 @@ import os
 import streamlit as st
 from openai import OpenAI
 
-# Set up OpenAI API
-openai.api_key = st.secrets["API_KEY"]
+# Access the OpenAI API key from the environment variable
+API_KEY = st.secrets["API_KEY"]
 
 if API_KEY is None:
     st.error("API key not found. Please check your secrets.toml file.")
