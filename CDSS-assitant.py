@@ -46,7 +46,7 @@ else:
     )
 
 # Step 3: Add Additional Notes (Optional)
-additional_notes = st.text_area("Additional Notes (Optional):", height=50)
+additional_notes = st.text_area("Additional Notes (Optional):", height=100)  # Fixed height parameter
 
 # Button to Generate Recommendations
 if st.button("Get Recommendations"):
