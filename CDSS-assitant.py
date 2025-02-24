@@ -33,9 +33,14 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Title and Subtitle
-st.markdown("<h1 style='text-align: center; color: #2E86C1;'>🧠 AI-Powered Clinical Decision Support for Psychiatrists</h1>", unsafe_allow_html=True)
-st.markdown("<h4 style='text-align: center; color: #555;'>Using LLMs for DSM-5 & ICD-10 Based Recommendations</h4>", unsafe_allow_html=True)
-
+st.markdown(
+    "<h1 style='text-align: center; color: #2E86C1;'>🧠 AI-Powered Clinical Decision Support for Psychiatrists</h1>", 
+    unsafe_allow_html=True
+)
+st.markdown(
+    "<h4 style='text-align: center; color: #555;'>Using Maudsley Guidelines, DSM-5 & ICD-10 for Evidence-Based Recommendations</h4>", 
+    unsafe_allow_html=True
+)
 # Input Section
 st.markdown("### 📋 Enter Patient Symptoms & Clinical History")
 
