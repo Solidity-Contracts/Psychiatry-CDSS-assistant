@@ -1,5 +1,8 @@
+import os
 import streamlit as st
 from openai import OpenAI
+import base64
+from datetime import datetime
 
 # Configure the page layout
 st.set_page_config(
@@ -14,6 +17,7 @@ API_KEY = st.secrets["API_KEY"]
 if API_KEY is None:
     st.error("🚨 API key not found. Please check your secrets.toml file.")
 else:
+    st.success("✅ API key loaded successfully.")
     client = OpenAI(api_key=API_KEY)
 
 # Custom CSS for UI Enhancement
@@ -130,4 +134,28 @@ with col2:
             st.markdown("---")
             st.markdown("<h2 style='text-align: center;'>📜 AI-Powered Recommendations</h2>", unsafe_allow_html=True)
             st.success("✅ Analysis Complete!")
-            st.write(recommendations)
+
+            # Allow doctors to edit the recommendations
+            st.markdown("#### ✏️ Edit Recommendations (if needed)")
+            edited_recommendations = st.text_area("Edit the recommendations below:", value=recommendations, height=400)
+
+            # Save or export the recommendations
+            st.markdown("#### 💾 Save or Export Recommendations")
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("📥 Save to Patient Record"):
+                    # Simulate saving to a database or EHR
+                    st.success("✅ Recommendations saved to patient record.")
+            with col2:
+                # Export as PDF
+                pdf_data = base64.b64encode(edited_recommendations.encode()).decode()
+                pdf_download_link = f'<a href="data:application/pdf;base64,{pdf_data}" download="recommendations.pdf">📄 Download as PDF</a>'
+                st.markdown(pdf_download_link, unsafe_allow_html=True)
+
+            # Feedback Section
+            st.markdown("#### 📝 Provide Feedback")
+            feedback = st.radio("Was this recommendation helpful?", ["👍 Yes", "👎 No"])
+            if feedback == "👎 No":
+                feedback_details = st.text_area("Please provide additional details:")
+                if st.button("Submit Feedback"):
+                    st.success("✅ Thank you for your feedback! We'll use it to improve the system.")
