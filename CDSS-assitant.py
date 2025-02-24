@@ -14,7 +14,6 @@ API_KEY = st.secrets["API_KEY"]
 if API_KEY is None:
     st.error("API key not found. Please check your secrets.toml file.")
 else:
-    st.success("API key loaded successfully.")
     client = OpenAI(api_key=API_KEY)
 
 # Custom CSS for a professional look
