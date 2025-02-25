@@ -21,6 +21,7 @@ st.markdown("""
     <style>
         body { background-color: #F4F4F4; }
         .highlight { background-color: #E8F5E9; padding: 10px; border-radius: 5px; }
+        .center-button { display: flex; justify-content: center; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -56,49 +57,62 @@ medications = st.text_area("Current Medications & Past Treatments (Optional):")
 
 st.markdown("---")
 st.markdown("<h3 style='text-align: center;'>Get AI-Powered Recommendations</h3>", unsafe_allow_html=True)
-if st.button("Generate Recommendations"):
-    if not symptoms:
-        st.error("Please select at least one symptom.")
-    else:
-        with st.spinner("Analyzing data... Generating recommendations..."):
-            prompt = f"""
-            You are an AI-powered clinical assistant for psychiatrists.
-            Based on DSM-5, Maudsley Prescribing Guidelines, and ICD-11, provide:
-            1. Likely Diagnosis
-            2. Differential Diagnoses
-            3. Clinical Reasoning
-            4. Recommended Treatment Plan
-            5. ICD-11 Code
-            6. Any Red Flags Requiring Urgent Referral
-            
-            Patient Info:
-            - Symptoms: {', '.join(symptoms)}
-            - Severity: {severity}
-            - Medical History: {medical_history if medical_history else 'Not provided'}
-            - Medications: {medications if medications else 'Not provided'}
-            """
-            
-            response = client.chat.completions.create(
-                model="gpt-4",
-                messages=[{"role": "user", "content": prompt}]
-            )
-            recommendations = response.choices[0].message.content
-            st.session_state.patient_history.append({"role": "AI", "content": recommendations})
-        
-        st.markdown("---")
-        st.markdown("<h2 style='text-align: center;'>AI-Powered Recommendations</h2>", unsafe_allow_html=True)
-        st.success("Analysis Complete!")
-        
-        sections = ["Likely Diagnosis", "Differential Diagnoses", "Clinical Reasoning", "Recommended Treatment Plan", "ICD-11 Code", "Red Flags Requiring Urgent Referral"]
-        for i, section in enumerate(sections):
-            start = recommendations.find(f"{i+1}. {section}")
-            end = recommendations.find(f"{i+2}.", start) if i+1 < len(sections) else len(recommendations)
-            content = recommendations[start:end].strip() if start != -1 else "No information available."
-            st.markdown(f"### {section}")
-            st.markdown(f"<div class='highlight'>{content}</div>", unsafe_allow_html=True)
+
+# Centering the button
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    if st.button("Generate Recommendations"):
+        if not symptoms:
+            st.error("Please select at least one symptom.")
+        else:
+            with st.spinner("Analyzing data... Generating recommendations..."):
+                prompt = f"""
+                You are an AI-powered clinical assistant for psychiatrists.
+                Based on DSM-5, Maudsley Prescribing Guidelines, and ICD-11, provide:
+                - Likely Diagnosis
+                - Differential Diagnoses
+                - Clinical Reasoning
+                - Recommended Treatment Plan
+                - ICD-11 Code
+                - Any Red Flags Requiring Urgent Referral
+
+                Patient Info:
+                - Symptoms: {', '.join(symptoms)}
+                - Severity: {severity}
+                - Medical History: {medical_history if medical_history else 'Not provided'}
+                - Medications: {medications if medications else 'Not provided'}
+                """
+
+                response = client.chat.completions.create(
+                    model="gpt-4",
+                    messages=[{"role": "user", "content": prompt}]
+                )
+                recommendations = response.choices[0].message.content
+                st.session_state.patient_history.append({"role": "AI", "content": recommendations})
+
+            st.markdown("---")
+            st.markdown("<h2 style='text-align: center;'>AI-Powered Recommendations</h2>", unsafe_allow_html=True)
+            st.success("Analysis Complete!")
+
+            sections = [
+                "Likely Diagnosis",
+                "Differential Diagnoses",
+                "Clinical Reasoning",
+                "Recommended Treatment Plan",
+                "ICD-11 Code",
+                "Red Flags Requiring Urgent Referral"
+            ]
+
+            for section in sections:
+                start = recommendations.find(section)
+                end = recommendations.find("\n", start) if start != -1 else None
+                content = recommendations[start:end].strip() if start != -1 else "No information available."
+                st.markdown(f"### {section}")
+                st.markdown(f"<div class='highlight'>{content}</div>", unsafe_allow_html=True)
 
 st.markdown("---")
 st.markdown("<h3 style='text-align: center;'>Ask Follow-Up Questions</h3>", unsafe_allow_html=True)
+
 follow_up_question = st.text_input("Ask a question about the recommendations:")
 if follow_up_question:
     with st.spinner("Generating response..."):
@@ -110,11 +124,13 @@ if follow_up_question:
         )
         follow_up_answer = follow_up_response.choices[0].message.content
         st.session_state.patient_history.append({"role": "AI", "content": follow_up_answer})
+
     st.markdown("---")
     st.markdown("<h4 style='text-align: center;'>Follow-Up Response</h4>", unsafe_allow_html=True)
     st.write(follow_up_answer)
 
 st.markdown("---")
 st.markdown("<h3 style='text-align: center;'>Patient History</h3>", unsafe_allow_html=True)
+
 for entry in st.session_state.patient_history:
     st.markdown(f"**{entry['role']}:** {entry['content']}")
