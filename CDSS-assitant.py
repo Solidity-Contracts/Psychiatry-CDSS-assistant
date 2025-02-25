@@ -171,7 +171,6 @@ with st.container():
     st.markdown('<div class="center-button">', unsafe_allow_html=True)
     if st.button('Generate Recommendations'):
         # Your button functionality goes here
-        st.write("Generating AI-powered recommendations...")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
