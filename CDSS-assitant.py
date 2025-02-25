@@ -25,29 +25,31 @@ st.markdown("""
             color: #000000 !important;
         }
 
+        /* Severity radio buttons - Ensure visibility in light mode */
         .stRadio div label {
-            color: #000000 !important;  /* Set default color to black */
+            color: #000000 !important;  /* Set text color to black */
         }
-        
+
         /* For Dark Mode */
         body[data-testid="stAppViewContainer"] {
             background-color: #121212 !important;  /* Dark background */
             color: #FFFFFF !important;  /* White text */
         }
 
-        /* Severity radio buttons: text color changes in dark mode */
+        /* Severity radio buttons - Ensure visibility in dark mode */
         body[data-testid="stAppViewContainer"] .stRadio div label {
             color: #FFFFFF !important;  /* Light text for dark mode */
         }
 
+        /* Text highlight styling */
         .highlight { 
             background-color: #A5D6A7; 
             padding: 10px;
             border-radius: 5px;
-            color: #000000 !important;  /* Ensure black text for readability */
+            color: #000000 !important;  /* Black text */
         }
 
-        /* Text areas, buttons, selectboxes, etc. */
+        /* Ensure inputs, text areas, and other elements have appropriate text color */
         .stTextArea textarea,
         .stMultiselect div,
         .stSelectbox select,
@@ -55,7 +57,7 @@ st.markdown("""
             color: #000000 !important;  /* Default black text */
         }
 
-        /* Ensure that input boxes have a white background in dark mode */
+        /* Ensure input boxes have white background and black text in dark mode */
         body[data-testid="stAppViewContainer"] .stTextArea textarea {
             background-color: #FFFFFF !important;
             color: #000000 !important;
