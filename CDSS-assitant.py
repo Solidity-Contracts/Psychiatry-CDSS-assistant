@@ -25,9 +25,9 @@ st.markdown("""
             color: #000000 !important;
         }
 
-        /* Severity radio buttons - Ensure visibility in light mode */
+        /* Severity radio buttons - Ensure visibility in light & dark mode  */
         .stRadio div label {
-            color: #000000 !important;  /* Set text color to black */
+            color: #555 !important;  /* All options with color #555 */
         }
 
         /* For Dark Mode */
@@ -36,10 +36,6 @@ st.markdown("""
             color: #FFFFFF !important;  /* White text */
         }
 
-        /* Severity radio buttons - Ensure visibility in dark mode */
-        body[data-testid="stAppViewContainer"] .stRadio div label {
-            color: #FFFFFF !important;  /* Light text for dark mode */
-        }
 
         /* Text highlight styling */
         .highlight { 
