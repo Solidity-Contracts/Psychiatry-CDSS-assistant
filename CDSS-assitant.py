@@ -165,3 +165,43 @@ if st.button("Generate Recommendations"):
         if '6. Any Red Flags' in recommendations:
             st.markdown("### Red Flags Requiring Urgent Referral")
             st.markdown(f"<div class='highlight'>{recommendations.split('6. Any Red Flags')[1].strip()}</div>", unsafe_allow_html=True)
+
+# Chatbot-Like Interaction for Follow-Up Questions
+st.markdown("---")
+st.markdown("<h3 style='text-align: center;'>Ask Follow-Up Questions</h3>", unsafe_allow_html=True)
+
+follow_up_question = st.text_input("Ask a question about the recommendations:")
+if follow_up_question:
+    with st.spinner("Generating response..."):
+        # Add the follow-up question to patient history
+        st.session_state.patient_history.append({"role": "Doctor", "content": follow_up_question})
+
+        # Prepare the follow-up prompt
+        follow_up_prompt = f"""
+        The doctor has asked the following question about your recommendations:
+        {follow_up_question}
+
+        Please provide a detailed and clear response.
+        """
+        follow_up_response = client.chat.completions.create(
+            model="gpt-4",
+            messages=[{"role": "user", "content": follow_up_prompt}]
+        )
+        follow_up_answer = follow_up_response.choices[0].message.content
+
+        # Save the follow-up response to patient history
+        st.session_state.patient_history.append({"role": "AI", "content": follow_up_answer})
+
+    # Display Follow-Up Response
+    st.markdown("---")
+    st.markdown("<h4 style='text-align: center;'>Follow-Up Response</h4>", unsafe_allow_html=True)
+    st.write(follow_up_answer)
+
+# Display Patient History
+st.markdown("---")
+st.markdown("<h3 style='text-align: center;'>Patient History</h3>", unsafe_allow_html=True)
+for entry in st.session_state.patient_history:
+    if entry["role"] == "AI":
+        st.markdown(f"**AI:** {entry['content']}")
+    else:
+        st.markdown(f"**Doctor:** {entry['content']}")
