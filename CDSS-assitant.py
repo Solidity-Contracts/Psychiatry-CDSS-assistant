@@ -26,6 +26,8 @@ st.markdown("""
         .stMultiselect div { font-size: 14px; }
         .stRadio div { font-size: 14px; }
         .stHeader { font-size: 20px; font-weight: bold; color: #333366; }
+        .highlight { background-color: #E8F5E9; padding: 10px; border-radius: 5px; }
+        .section { margin-bottom: 20px; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -46,8 +48,9 @@ symptom_category = st.selectbox(
     "Choose a Category:",
     [
         "Mood Disorders", "Anxiety Disorders", "Psychotic Disorders",
-        "Personality Disorders", "Neurodevelopmental Disorders",
-        "Substance Use Disorders", "Dementia & Cognitive Disorders", "Other"
+        "Neurodevelopmental Disorders", "Substance Use Disorders",
+        "Trauma and Stressor-Related Disorders", "Personality Disorders",
+        "Cognitive Disorders", "Other"
     ]
 )
 
@@ -65,16 +68,19 @@ symptom_options = {
     "Psychotic Disorders": [
         "Hallucinations", "Delusions", "Disorganized speech", "Disorganized behavior"
     ],
-    "Personality Disorders": [
-        "Unstable relationships", "Self-harm", "Grandiosity", "Fear of abandonment"
-    ],
     "Neurodevelopmental Disorders": [
         "Inattention", "Hyperactivity", "Impulsivity", "Repetitive behaviors"
     ],
     "Substance Use Disorders": [
         "Cravings", "Withdrawal symptoms", "Drug-seeking behavior"
     ],
-    "Dementia & Cognitive Disorders": [
+    "Trauma and Stressor-Related Disorders": [
+        "Flashbacks", "Hyperarousal", "Avoidance behaviors"
+    ],
+    "Personality Disorders": [
+        "Unstable relationships", "Self-harm", "Grandiosity", "Fear of abandonment"
+    ],
+    "Cognitive Disorders": [
         "Memory loss", "Disorientation", "Language impairment"
     ],
     "Other": ["Other symptom 1", "Other symptom 2"]
@@ -84,7 +90,7 @@ symptoms = st.multiselect("Choose Symptoms:", symptom_options.get(symptom_catego
 
 # Step 3: Select Symptom Severity
 st.markdown("#### 3. Select Symptom Severity")
-severity = st.radio("Choose Severity:", ["🟢 Mild", "🟡 Moderate", "🔴 Severe"])
+severity = st.radio("Choose Severity:", ["Mild", "Moderate", "Severe"])
 
 # Step 4: Additional Clinical Information
 st.markdown("#### 4. Add Additional Clinical Information")
@@ -134,7 +140,25 @@ if st.button("Generate Recommendations"):
         st.markdown("---")
         st.markdown("<h2 style='text-align: center;'>AI-Powered Recommendations</h2>", unsafe_allow_html=True)
         st.success("Analysis Complete!")
-        st.write(recommendations)
+
+        # Format the AI's response into sections
+        st.markdown("### Likely Diagnosis")
+        st.markdown(f"<div class='highlight'>{recommendations.split('1. Likely Diagnosis')[1].split('2. Differential Diagnoses')[0].strip()}</div>", unsafe_allow_html=True)
+
+        st.markdown("### Differential Diagnoses")
+        st.markdown(f"<div class='highlight'>{recommendations.split('2. Differential Diagnoses')[1].split('3. Clinical Reasoning')[0].strip()}</div>", unsafe_allow_html=True)
+
+        st.markdown("### Clinical Reasoning")
+        st.markdown(f"<div class='highlight'>{recommendations.split('3. Clinical Reasoning')[1].split('4. Recommended Treatment Plan')[0].strip()}</div>", unsafe_allow_html=True)
+
+        st.markdown("### Recommended Treatment Plan")
+        st.markdown(f"<div class='highlight'>{recommendations.split('4. Recommended Treatment Plan')[1].split('5. ICD-10 Code')[0].strip()}</div>", unsafe_allow_html=True)
+
+        st.markdown("### ICD-10 Code")
+        st.markdown(f"<div class='highlight'>{recommendations.split('5. ICD-10 Code')[1].split('6. Any Red Flags')[0].strip()}</div>", unsafe_allow_html=True)
+
+        st.markdown("### Red Flags Requiring Urgent Referral")
+        st.markdown(f"<div class='highlight'>{recommendations.split('6. Any Red Flags')[1].strip()}</div>", unsafe_allow_html=True)
 
 # Chatbot-Like Interaction for Follow-Up Questions
 st.markdown("---")
