@@ -167,17 +167,11 @@ medications = st.text_area("Current Medications & Past Treatments (Optional):")
 st.markdown("---")
 st.markdown("<h3 style='text-align: center;'>Get AI-Powered Recommendations</h3>", unsafe_allow_html=True)
 
-with st.container():
-    st.markdown('<div class="center-button">', unsafe_allow_html=True)
-    if st.button('Generate Recommendations'):
-        st.write("Generating AI-powered recommendations...")
-
-    st.markdown('</div>', unsafe_allow_html=True)
-
+if st.button("Generate Recommendations"):
     if not symptoms:
         st.error("Please select at least one symptom.")
     else:
-        with st.spinner("Analyzing data... Generating recommendations..."):    
+        with st.spinner("Analyzing data... Generating recommendations..."):  
         # Prepare the prompt for the LLM
             prompt = f"""
             You are an AI-powered clinical assistant for psychiatrists. 
