@@ -36,7 +36,14 @@ st.markdown("""
         }
         
         .section { margin-bottom: 20px; }
-        .center-button { display: flex; justify-content: center; align-items: center; }
+        
+        /* Center button */
+        .center-button { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            margin-top: 20px; 
+        }
         
         /* Dark Mode adjustments */
         body[data-testid="stAppViewContainer"] {
@@ -64,19 +71,26 @@ st.markdown("""
             color: #000000 !important;  /* Ensure text is black */
         }
         
-        /* Remove colons after labels and input fields */
+        /* Remove colons from labels after text inputs */
         .stTextArea label,
-        .stTextArea div.stTextInput,
-        .stSelectbox label,
-        .stSelectbox div.stSelectInput {
+        .stSelectbox label {
             display: block;
+            margin-bottom: 8px;
         }
 
+        /* Remove colon specifically from text input areas */
         .stTextArea label:after,
         .stSelectbox label:after {
             content: "";
         }
         
+        /* Remove colons after all labels */
+        .stTextArea label,
+        .stSelectbox label,
+        .stTextArea div.stTextInput {
+            display: block;
+        }
+
         /* Text color in light mode should remain black */
         body {
             color: #000000 !important;  /* Set default text color to black */
@@ -154,7 +168,11 @@ medications = st.text_area("Current Medications & Past Treatments (Optional):")
 st.markdown("---")
 st.markdown("<h3 style='text-align: center;'>Get AI-Powered Recommendations</h3>", unsafe_allow_html=True)
 
-if st.button("Generate Recommendations"):
+with st.container():
+    st.markdown('<div class="center-button">', unsafe_allow_html=True)
+    if st.button('Generate Recommendations'):
+        # Your button functionality goes here
+    st.markdown('</div>', unsafe_allow_html=True)
     if not symptoms:
         st.error("Please select at least one symptom.")
     else:
