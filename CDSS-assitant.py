@@ -137,7 +137,7 @@ with col2:
                 recommendations = response.choices[0].message.content
 
                 # Save the initial recommendations to patient history
-                st.session_state.patient_history.append({"role": "AI", "content": recommendations})
+                st.session_state.patient_history.append({"role": "AI", "content" recommendations})
 
             # Display Recommendations
             st.markdown("---")
