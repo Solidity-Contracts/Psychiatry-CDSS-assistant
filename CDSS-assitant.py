@@ -232,14 +232,15 @@ with st.container():
             st.markdown("### Recommended Treatment Plan")
             st.markdown(f"<div class='highlight'>{recommendations.split('4. Recommended Treatment Plan')[1].split('5. ICD-11 Code')[0].strip()}</div>", unsafe_allow_html=True)
 
+        
         if '5. ICD-11 Code' in recommendations:
             st.markdown("### ICD-11 Code")
-            st.markdown(f"<div class='highlight'>{recommendations.split('5. ICD-11 Code')[1].split('6. Any Red Flags')[0].strip()}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='highlight'>{recommendations.split('5. ICD-11 Code')[1].split('6. Any Red Flags')[0].strip().replace(':', '')}</div>", unsafe_allow_html=True)
 
         if '6. Any Red Flags Requiring Urgent Referral' in recommendations:
-            st.markdown("### Red Flags")
-            st.markdown(f"<div class='highlight'>{recommendations.split('6. Any Red Flags Requiring Urgent Referral')[1].strip()}</div>", unsafe_allow_html=True)
-
+            st.markdown("### Any Red Flags Requiring Urgent Referral")
+            st.markdown(f"<div class='highlight'>{recommendations.split('6. Any Red Flags')[1].strip().replace(':', '')}</div>", unsafe_allow_html=True)
+            
 # Chatbot-Like Interaction for Follow-Up Questions
 st.markdown("---")
 st.markdown("<h3 style='text-align: center;'>Ask Follow-Up Questions</h3>", unsafe_allow_html=True)
