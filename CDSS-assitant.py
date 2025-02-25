@@ -31,6 +31,21 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# Custom CSS for dark mode text color adjustment (new)
+st.markdown("""
+    <style>
+        /* Override text color in dark mode */
+        body[data-testid="stAppViewContainer"] {
+            color: #000000 !important;  /* Set text color to black */
+        }
+        /* Optional: change background for content areas in dark mode */
+        .highlight {
+            background-color: #E8F5E9 !important;
+            color: #000000 !important;  /* Set text color to black in the highlighted areas */
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 # Title and Subtitle
 st.markdown("<h1 style='text-align: center; color: #2E86C1;'>LLM-Powered Clinical Decision Support for Psychiatrists</h1>", unsafe_allow_html=True)
 st.markdown("<h4 style='text-align: center; color: #555;'>Using Maudsley Guidelines, DSM-5 & ICD-11 for Evidence-Based Recommendations</h4>", unsafe_allow_html=True)
