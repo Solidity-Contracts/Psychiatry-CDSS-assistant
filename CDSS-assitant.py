@@ -38,13 +38,13 @@ st.markdown("""
         .section { margin-bottom: 20px; }
         
         /* Center button */
-        .center-button { 
+        .center-button {
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            margin-top: 20px; 
+            margin-top: 20px;
         }
-        
+
         /* Dark Mode adjustments */
         body[data-testid="stAppViewContainer"] {
             color: #FFFFFF !important;  /* Set all text to white in dark mode */
@@ -78,13 +78,12 @@ st.markdown("""
             margin-bottom: 8px;
         }
 
-        /* Remove colon specifically from text input areas */
         .stTextArea label:after,
         .stSelectbox label:after {
             content: "";
         }
-        
-        /* Remove colons after all labels */
+
+        /* Ensure no colons after all labels */
         .stTextArea label,
         .stSelectbox label,
         .stTextArea div.stTextInput {
