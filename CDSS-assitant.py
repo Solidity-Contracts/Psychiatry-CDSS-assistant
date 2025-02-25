@@ -19,80 +19,48 @@ else:
 # Custom CSS for a professional look
 st.markdown("""
     <style>
-        body { background-color: #F4F4F4; }
-        .stButton>button { background-color: #4CAF50; color: white; font-size: 16px; }
-        .stTextArea textarea { font-size: 14px; }
-        .stSelectbox select { font-size: 14px; }
-        .stMultiselect div { font-size: 14px; }
-        .stRadio div { font-size: 14px; }
-        .stHeader { font-size: 20px; font-weight: bold; color: #333366; }
-        
-        /* Highlight background with good contrast */
-        .highlight { 
-            background-color: #A5D6A7; /* Light green */
-            padding: 10px;
-            border-radius: 5px;
-            color: #000000 !important; /* Ensure black text for readability */
-        }
-        
-        .section { margin-bottom: 20px; }
-        
-        /* Center button */
-        .center-button {
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            margin-top: 20px;
+        /* Background and text colors for light mode */
+        body {
+            background-color: #F4F4F4;
+            color: #000000 !important;
         }
 
-        /* Dark Mode adjustments */
+        .stRadio div label {
+            color: #000000 !important;  /* Set default color to black */
+        }
+        
+        /* For Dark Mode */
         body[data-testid="stAppViewContainer"] {
-            color: #FFFFFF !important;  /* Set all text to white in dark mode */
+            background-color: #121212 !important;  /* Dark background */
+            color: #FFFFFF !important;  /* White text */
         }
-        
-        /* Ensure highlight section is easy to read in dark mode */
-        .highlight {
-            background-color: #A5D6A7 !important; /* Light green to stand out */
-            color: #000000 !important;  /* Set text to black for high contrast */
+
+        /* Severity radio buttons: text color changes in dark mode */
+        body[data-testid="stAppViewContainer"] .stRadio div label {
+            color: #FFFFFF !important;  /* Light text for dark mode */
         }
-        
-        /* Text areas, buttons, selectboxes in both modes */
+
+        .highlight { 
+            background-color: #A5D6A7; 
+            padding: 10px;
+            border-radius: 5px;
+            color: #000000 !important;  /* Ensure black text for readability */
+        }
+
+        /* Text areas, buttons, selectboxes, etc. */
         .stTextArea textarea,
         .stMultiselect div,
         .stSelectbox select,
-        .stRadio div,
-        .stButton>button {
-            color: #000000 !important;  /* Set text color to black for clarity */
+        .stRadio div {
+            color: #000000 !important;  /* Default black text */
         }
-        
-        /* Input boxes with white background in dark mode */
-        .stTextArea textarea {
+
+        /* Ensure that input boxes have a white background in dark mode */
+        body[data-testid="stAppViewContainer"] .stTextArea textarea {
             background-color: #FFFFFF !important;
-            color: #000000 !important;  /* Ensure text is black */
-        }
-        
-        /* Remove colons from labels after text inputs */
-        .stTextArea label,
-        .stSelectbox label {
-            display: block;
-            margin-bottom: 8px;
+            color: #000000 !important;
         }
 
-        .stTextArea label:after,
-        .stSelectbox label:after {
-            content: "";
-        }
-
-        /* Severity options (Mild, Moderate, Severe) */
-        .stRadio div label {
-            color: #FFFFFF !important;  /* Light color for dark mode */
-            font-size: 16px;
-        }
-
-        /* Text color in light mode should remain black */
-        body {
-            color: #000000 !important;  /* Set default text color to black */
-        }
     </style>
 """, unsafe_allow_html=True)
 
