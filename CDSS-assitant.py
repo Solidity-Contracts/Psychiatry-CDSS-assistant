@@ -170,11 +170,10 @@ st.markdown("<h3 style='text-align: center;'>Get AI-Powered Recommendations</h3>
 with st.container():
     st.markdown('<div class="center-button">', unsafe_allow_html=True)
     if st.button('Generate Recommendations'):
-        # Your button functionality goes here
+        st.write("Generating AI-powered recommendations...")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
-    
     if not symptoms:
         st.error("Please select at least one symptom.")
     else:
