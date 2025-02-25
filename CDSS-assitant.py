@@ -90,7 +90,7 @@ symptoms = st.multiselect("Choose Symptoms:", symptom_options.get(symptom_catego
 
 # Step 3: Select Symptom Severity
 st.markdown("#### 3. Select Symptom Severity")
-severity = st.radio("Choose Severity:", ["Mild", "Moderate", "Severe"])
+severity = st.radio("Choose Severity:", ["🟢 Mild", "🟡 Moderate", "🔴 Severe"])
 
 # Step 4: Additional Clinical Information
 st.markdown("#### 4. Add Additional Clinical Information")
