@@ -235,9 +235,9 @@ with st.container():
             st.markdown("### ICD-11 Code")
             st.markdown(f"<div class='highlight'>{recommendations.split('5. ICD-11 Code')[1].split('6. Any Red Flags')[0].strip()}</div>", unsafe_allow_html=True)
 
-        if '6. Any Red Flags' in recommendations:
-            st.markdown("### Red Flags Requiring Urgent Referral")
-            st.markdown(f"<div class='highlight'>{recommendations.split('6. Any Red Flags')[1].strip()}</div>", unsafe_allow_html=True)
+        if '6. Any Red Flags Requiring Urgent Referral' in recommendations:
+            st.markdown("### Red Flags")
+            st.markdown(f"<div class='highlight'>{recommendations.split('6. Any Red Flags Requiring Urgent Referral')[1].strip()}</div>", unsafe_allow_html=True)
 
 # Chatbot-Like Interaction for Follow-Up Questions
 st.markdown("---")
