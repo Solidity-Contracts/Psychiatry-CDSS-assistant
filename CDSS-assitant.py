@@ -174,6 +174,7 @@ with st.container():
         st.write("Generating AI-powered recommendations...")
 
     st.markdown('</div>', unsafe_allow_html=True)
+
     
     if not symptoms:
         st.error("Please select at least one symptom.")
