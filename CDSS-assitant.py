@@ -36,82 +36,119 @@ if "patient_history" not in st.session_state:
 # Input Section
 st.markdown("### Patient Symptoms & Clinical History")
 
-symptom_category = st.selectbox("Select Symptom Category:", [
-    "Mood Disorders", "Anxiety Disorders", "Psychotic Disorders",
-    "Neurodevelopmental Disorders", "Substance Use Disorders",
-    "Trauma and Stressor-Related Disorders", "Personality Disorders",
-    "Cognitive Disorders", "Other"
-])
+# Step 1: Select Symptom Category
+st.markdown("#### 1. Select Symptom Category")
+symptom_category = st.selectbox(
+    "Choose a Category:",
+    [
+        "Mood Disorders", "Anxiety Disorders", "Psychotic Disorders",
+        "Neurodevelopmental Disorders", "Substance Use Disorders",
+        "Trauma and Stressor-Related Disorders", "Personality Disorders",
+        "Cognitive Disorders", "Other"
+    ]
+)
 
+# Step 2: Select Specific Symptoms
+st.markdown("#### 2. Select Specific Symptoms")
 symptom_options = {
-    "Mood Disorders": ["Persistent sadness", "Loss of interest", "Insomnia", "Hypersomnia"],
-    "Anxiety Disorders": ["Excessive worry", "Panic attacks", "Hypervigilance"],
-    "Psychotic Disorders": ["Hallucinations", "Delusions", "Disorganized speech"],
+    "Mood Disorders": [
+        "Persistent sadness", "Loss of interest", "Insomnia", "Hypersomnia",
+        "Weight loss/gain", "Feelings of worthlessness", "Suicidal ideation"
+    ],
+    "Anxiety Disorders": [
+        "Excessive worry", "Panic attacks", "Hypervigilance",
+        "Obsessive thoughts", "Compulsive behaviors"
+    ],
+    "Psychotic Disorders": [
+        "Hallucinations", "Delusions", "Disorganized speech", "Disorganized behavior"
+    ],
+    "Neurodevelopmental Disorders": [
+        "Inattention", "Hyperactivity", "Impulsivity", "Repetitive behaviors"
+    ],
+    "Substance Use Disorders": [
+        "Cravings", "Withdrawal symptoms", "Drug-seeking behavior"
+    ],
+    "Trauma and Stressor-Related Disorders": [
+        "Flashbacks", "Hyperarousal", "Avoidance behaviors"
+    ],
+    "Personality Disorders": [
+        "Unstable relationships", "Self-harm", "Grandiosity", "Fear of abandonment"
+    ],
+    "Cognitive Disorders": [
+        "Memory loss", "Disorientation", "Language impairment"
+    ],
     "Other": ["Other symptom 1", "Other symptom 2"]
 }
 
-symptoms = st.multiselect("Select Symptoms:", symptom_options.get(symptom_category, []))
-severity = st.radio("Select Severity:", ["Mild", "Moderate", "Severe"])
-medical_history = st.text_area("Past Medical & Psychiatric History (Optional):")
-medications = st.text_area("Current Medications & Past Treatments (Optional):")
-
+symptoms = st.multiselect("Choose Symptoms:", symptom_options.get(symptom_category, []))
 st.markdown("---")
 st.markdown("<h3 style='text-align: center;'>Get AI-Powered Recommendations</h3>", unsafe_allow_html=True)
 
-# Centering the button
-col1, col2, col3 = st.columns([1, 2, 1])
+# Button to Generate Recommendations
+st.markdown("---")
+st.markdown("<h3 style='text-align: center;'>Get AI-Powered Recommendations</h3>", unsafe_allow_html=True)
+
+# Use columns to center the button
+col1, col2, col3 = st.columns([1, 2, 1])  # Adjust the column widths as needed
 with col2:
-    if st.button("Generate Recommendations"):
+    if st.button("Generate Recommendations", use_container_width=True):
         if not symptoms:
             st.error("Please select at least one symptom.")
         else:
             with st.spinner("Analyzing data... Generating recommendations..."):
+                # Prepare the prompt for the LLM
                 prompt = f"""
-                You are an AI-powered clinical assistant for psychiatrists.
-                Based on DSM-5, Maudsley Prescribing Guidelines, and ICD-11, provide:
-                - Likely Diagnosis
-                - Differential Diagnoses
-                - Clinical Reasoning
-                - Recommended Treatment Plan
-                - ICD-11 Code
-                - Any Red Flags Requiring Urgent Referral
+                You are an AI-powered clinical assistant for psychiatrists. 
+                Based on the DSM-5, Maudsley Prescribing Guidelines, and ICD-11 codes, 
+                provide a structured response including:
 
-                Patient Info:
-                - Symptoms: {', '.join(symptoms)}
-                - Severity: {severity}
-                - Medical History: {medical_history if medical_history else 'Not provided'}
-                - Medications: {medications if medications else 'Not provided'}
+                1. Likely Diagnosis  
+                2. Differential Diagnoses  
+                3. Clinical Reasoning  
+                4. Recommended Treatment Plan (Based on Maudsley Guidelines)  
+                5. ICD-11 Code  
+                6. Any Red Flags Requiring Urgent Referral  
+
+                Patient Information:  
+                - Symptoms: {", ".join(symptoms)}  
+                - Severity: {severity}  
+                - Medical History: {medical_history if medical_history else 'Not provided'}  
+                - Current Medications: {medications if medications else 'Not provided'}  
+
+                Provide a detailed and structured response.
                 """
-
                 response = client.chat.completions.create(
                     model="gpt-4",
                     messages=[{"role": "user", "content": prompt}]
                 )
                 recommendations = response.choices[0].message.content
+
+                # Save the initial recommendations to patient history
                 st.session_state.patient_history.append({"role": "AI", "content": recommendations})
 
+            # Display Recommendations
             st.markdown("---")
             st.markdown("<h2 style='text-align: center;'>AI-Powered Recommendations</h2>", unsafe_allow_html=True)
             st.success("Analysis Complete!")
 
-            sections = [
-                "Likely Diagnosis",
-                "Differential Diagnoses",
-                "Clinical Reasoning",
-                "Recommended Treatment Plan",
-                "ICD-11 Code",
-                "Red Flags Requiring Urgent Referral"
-            ]
+            # Format the AI's response into sections
+            st.markdown("### Likely Diagnosis")
+            st.markdown(f"<div class='highlight'>{recommendations.split('Likely Diagnosis')[1].split('Differential Diagnoses')[0].strip()}</div>", unsafe_allow_html=True)
 
-            for section in sections:
-                start = recommendations.find(section)
-                end = recommendations.find("\n", start) if start != -1 else None
-                content = recommendations[start:end].strip() if start != -1 else "No information available."
-                st.markdown(f"### {section}")
-                st.markdown(f"<div class='highlight'>{content}</div>", unsafe_allow_html=True)
+            st.markdown("### Differential Diagnoses")
+            st.markdown(f"<div class='highlight'>{recommendations.split('Differential Diagnoses')[1].split('Clinical Reasoning')[0].strip()}</div>", unsafe_allow_html=True)
 
-st.markdown("---")
-st.markdown("<h3 style='text-align: center;'>Ask Follow-Up Questions</h3>", unsafe_allow_html=True)
+            st.markdown("### Clinical Reasoning")
+            st.markdown(f"<div class='highlight'>{recommendations.split('3. Clinical Reasoning')[1].split('Recommended Treatment Plan')[0].strip()}</div>", unsafe_allow_html=True)
+
+            st.markdown("### Recommended Treatment Plan")
+            st.markdown(f"<div class='highlight'>{recommendations.split('Recommended Treatment Plan')[1].split('ICD-11 Code')[0].strip()}</div>", unsafe_allow_html=True)
+
+            st.markdown("### ICD-10 Code")
+            st.markdown(f"<div class='highlight'>{recommendations.split('ICD-11 Code')[1].split('Any Red Flags')[0].strip()}</div>", unsafe_allow_html=True)
+
+            st.markdown("### Red Flags Requiring Urgent Referral")
+            st.markdown(f"<div class='highlight'>{recommendations.split('Any Red Flags')[1].strip()}</div>", unsafe_allow_html=True)
 
 follow_up_question = st.text_input("Ask a question about the recommendations:")
 if follow_up_question:
