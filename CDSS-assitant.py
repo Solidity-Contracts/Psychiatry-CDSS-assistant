@@ -177,7 +177,8 @@ with st.container():
     if not symptoms:
         st.error("Please select at least one symptom.")
     else:
-            # Prepare the prompt for the LLM
+        with st.spinner("Analyzing data... Generating recommendations..."):    
+        # Prepare the prompt for the LLM
             prompt = f"""
             You are an AI-powered clinical assistant for psychiatrists. 
             Based on the DSM-5, Maudsley Prescribing Guidelines, and ICD-11 codes, 
