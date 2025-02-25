@@ -112,14 +112,14 @@ with col2:
                 # Prepare the prompt for the LLM
                 prompt = f"""
                 You are an AI-powered clinical assistant for psychiatrists. 
-                Based on the DSM-5, Maudsley Prescribing Guidelines, and ICD-10 codes, 
+                Based on the DSM-5, Maudsley Prescribing Guidelines, and ICD-11 codes, 
                 provide a structured response including:
 
                 1. Likely Diagnosis  
                 2. Differential Diagnoses  
                 3. Clinical Reasoning  
                 4. Recommended Treatment Plan (Based on Maudsley Guidelines)  
-                5. ICD-10 Code  
+                5. ICD-11 Code  
                 6. Any Red Flags Requiring Urgent Referral  
 
                 Patient Information:  
@@ -155,10 +155,10 @@ with col2:
             st.markdown(f"<div class='highlight'>{recommendations.split('3. Clinical Reasoning')[1].split('4. Recommended Treatment Plan')[0].strip()}</div>", unsafe_allow_html=True)
 
             st.markdown("### Recommended Treatment Plan")
-            st.markdown(f"<div class='highlight'>{recommendations.split('4. Recommended Treatment Plan')[1].split('5. ICD-10 Code')[0].strip()}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='highlight'>{recommendations.split('4. Recommended Treatment Plan')[1].split('5. ICD-11 Code')[0].strip()}</div>", unsafe_allow_html=True)
 
-            st.markdown("### ICD-10 Code")
-            st.markdown(f"<div class='highlight'>{recommendations.split('5. ICD-10 Code')[1].split('6. Any Red Flags')[0].strip()}</div>", unsafe_allow_html=True)
+            st.markdown("### ICD-11 Code")
+            st.markdown(f"<div class='highlight'>{recommendations.split('5. ICD-11 Code')[1].split('6. Any Red Flags')[0].strip()}</div>", unsafe_allow_html=True)
 
             st.markdown("### Red Flags Requiring Urgent Referral")
             st.markdown(f"<div class='highlight'>{recommendations.split('6. Any Red Flags')[1].strip()}</div>", unsafe_allow_html=True)
