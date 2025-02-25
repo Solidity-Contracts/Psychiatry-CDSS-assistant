@@ -26,31 +26,47 @@ st.markdown("""
         .stMultiselect div { font-size: 14px; }
         .stRadio div { font-size: 14px; }
         .stHeader { font-size: 20px; font-weight: bold; color: #333366; }
-        .highlight { background-color: #E8F5E9; padding: 10px; border-radius: 5px; color: #000000; }
+        
+        /* Highlight background with good contrast */
+        .highlight { 
+            background-color: #A5D6A7; /* Light green */
+            padding: 10px;
+            border-radius: 5px;
+            color: #000000 !important; /* Ensure black text for readability */
+        }
+        
         .section { margin-bottom: 20px; }
         .center-button { display: flex; justify-content: center; align-items: center; }
-    </style>
-""", unsafe_allow_html=True)
-
-# Custom CSS for dark mode text color adjustment 
-st.markdown("""
-    <style>
-        /* Override text color in dark mode */
+        
+        /* Dark Mode adjustments */
         body[data-testid="stAppViewContainer"] {
-            color: #000000 !important;  /* Set text color to black */
+            color: #FFFFFF !important;  /* Set all text to white in dark mode */
         }
-        /* Ensure text in highlights is readable in dark mode */
+        
+        /* Ensure highlight section is easy to read in dark mode */
         .highlight {
-            background-color: #E8F5E9 !important;
-            color: #000000 !important;  /* Set text color to black */
+            background-color: #A5D6A7 !important; /* Light green to stand out */
+            color: #000000 !important;  /* Set text to black for high contrast */
         }
-        /* Additional styling for text areas that may have white font */
+        
+        /* Text areas, buttons, selectboxes in both modes */
         .stTextArea textarea,
         .stMultiselect div,
         .stSelectbox select,
         .stRadio div,
         .stButton>button {
-            color: #000000 !important;  /* Set text color to black */
+            color: #000000 !important;  /* Set text color to black for clarity */
+        }
+        
+        /* Input boxes with white background in dark mode */
+        .stTextArea textarea {
+            background-color: #FFFFFF !important;
+            color: #000000 !important;  /* Ensure text is black */
+        }
+        
+        /* Text color in light mode should remain black */
+        body {
+            color: #000000 !important;  /* Set default text color to black */
         }
     </style>
 """, unsafe_allow_html=True)
