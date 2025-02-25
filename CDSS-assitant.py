@@ -16,7 +16,6 @@ if API_KEY is None:
 else:
     client = OpenAI(api_key=API_KEY)
 
-# Custom CSS for a professional look
 st.markdown("""
     <style>
         /* Background and text colors for light mode */
@@ -36,7 +35,6 @@ st.markdown("""
             color: #FFFFFF !important;  /* White text */
         }
 
-
         /* Text highlight styling */
         .highlight { 
             background-color: #A5D6A7; 
@@ -54,13 +52,23 @@ st.markdown("""
         }
 
         /* Ensure input boxes have white background and black text in dark mode */
-        body[data-testid="stAppViewContainer"] .stTextArea textarea {
+        body[data-testid="stAppViewContainer"] .stTextArea textarea,
+        body[data-testid="stAppViewContainer"] .stMultiselect div,
+        body[data-testid="stAppViewContainer"] .stSelectbox select,
+        body[data-testid="stAppViewContainer"] .stRadio div {
             background-color: #FFFFFF !important;
             color: #000000 !important;
         }
 
+        /* Ensure text input fields have white background and black text in dark mode */
+        body[data-testid="stAppViewContainer"] .stTextInput input {
+            background-color: #FFFFFF !important;
+            color: #000000 !important;
+        }
+        
     </style>
 """, unsafe_allow_html=True)
+
 
 # Title and Subtitle
 st.markdown("<h1 style='text-align: center; color: #2E86C1;'>LLM-Powered Clinical Decision Support for Psychiatrists</h1>", unsafe_allow_html=True)
