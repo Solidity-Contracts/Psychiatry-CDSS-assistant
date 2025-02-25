@@ -64,6 +64,19 @@ st.markdown("""
             color: #000000 !important;  /* Ensure text is black */
         }
         
+        /* Remove colons after labels and input fields */
+        .stTextArea label,
+        .stTextArea div.stTextInput,
+        .stSelectbox label,
+        .stSelectbox div.stSelectInput {
+            display: block;
+        }
+
+        .stTextArea label:after,
+        .stSelectbox label:after {
+            content: "";
+        }
+        
         /* Text color in light mode should remain black */
         body {
             color: #000000 !important;  /* Set default text color to black */
