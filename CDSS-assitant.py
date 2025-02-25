@@ -20,28 +20,37 @@ else:
 st.markdown("""
     <style>
         body { background-color: #F4F4F4; }
-        .stButton>button { background-color: #4CAF50; color: white; font-size: 16px; display: block; margin: 0 auto; }
+        .stButton>button { background-color: #4CAF50; color: white; font-size: 16px; }
         .stTextArea textarea { font-size: 14px; }
         .stSelectbox select { font-size: 14px; }
         .stMultiselect div { font-size: 14px; }
         .stRadio div { font-size: 14px; }
         .stHeader { font-size: 20px; font-weight: bold; color: #333366; }
-        .highlight { background-color: #E8F5E9; padding: 10px; border-radius: 5px; }
+        .highlight { background-color: #E8F5E9; padding: 10px; border-radius: 5px; color: #000000; }
         .section { margin-bottom: 20px; }
+        .center-button { display: flex; justify-content: center; align-items: center; }
     </style>
 """, unsafe_allow_html=True)
 
-# Custom CSS for dark mode text color adjustment (new)
+# Custom CSS for dark mode text color adjustment 
 st.markdown("""
     <style>
         /* Override text color in dark mode */
         body[data-testid="stAppViewContainer"] {
             color: #000000 !important;  /* Set text color to black */
         }
-        /* Optional: change background for content areas in dark mode */
+        /* Ensure text in highlights is readable in dark mode */
         .highlight {
             background-color: #E8F5E9 !important;
-            color: #000000 !important;  /* Set text color to black in the highlighted areas */
+            color: #000000 !important;  /* Set text color to black */
+        }
+        /* Additional styling for text areas that may have white font */
+        .stTextArea textarea,
+        .stMultiselect div,
+        .stSelectbox select,
+        .stRadio div,
+        .stButton>button {
+            color: #000000 !important;  /* Set text color to black */
         }
     </style>
 """, unsafe_allow_html=True)
