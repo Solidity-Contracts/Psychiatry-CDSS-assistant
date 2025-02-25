@@ -20,7 +20,7 @@ else:
 st.markdown("""
     <style>
         body { background-color: #F4F4F4; }
-        .stButton>button { background-color: #4CAF50; color: white; font-size: 16px; }
+        .stButton>button { background-color: #4CAF50; color: white; font-size: 16px; display: block; margin: 0 auto; }
         .stTextArea textarea { font-size: 14px; }
         .stSelectbox select { font-size: 14px; }
         .stMultiselect div { font-size: 14px; }
@@ -109,14 +109,14 @@ if st.button("Generate Recommendations"):
             # Prepare the prompt for the LLM
             prompt = f"""
             You are an AI-powered clinical assistant for psychiatrists. 
-            Based on the DSM-5, Maudsley Prescribing Guidelines, and ICD-10 codes, 
+            Based on the DSM-5, Maudsley Prescribing Guidelines, and ICD-11 codes, 
             provide a structured response including:
 
             1. Likely Diagnosis  
             2. Differential Diagnoses  
             3. Clinical Reasoning  
             4. Recommended Treatment Plan (Based on Maudsley Guidelines)  
-            5. ICD-10 Code  
+            5. ICD-11 Code  
             6. Any Red Flags Requiring Urgent Referral  
 
             Patient Information:  
@@ -142,60 +142,26 @@ if st.button("Generate Recommendations"):
         st.success("Analysis Complete!")
 
         # Format the AI's response into sections
-        st.markdown("### Likely Diagnosis")
-        st.markdown(f"<div class='highlight'>{recommendations.split('1. Likely Diagnosis')[1].split('2. Differential Diagnoses')[0].strip()}</div>", unsafe_allow_html=True)
+        if '1. Likely Diagnosis' in recommendations:
+            st.markdown("### Likely Diagnosis")
+            st.markdown(f"<div class='highlight'>{recommendations.split('1. Likely Diagnosis')[1].split('2. Differential Diagnoses')[0].strip()}</div>", unsafe_allow_html=True)
 
-        st.markdown("### Differential Diagnoses")
-        st.markdown(f"<div class='highlight'>{recommendations.split('2. Differential Diagnoses')[1].split('3. Clinical Reasoning')[0].strip()}</div>", unsafe_allow_html=True)
+        if '2. Differential Diagnoses' in recommendations:
+            st.markdown("### Differential Diagnoses")
+            st.markdown(f"<div class='highlight'>{recommendations.split('2. Differential Diagnoses')[1].split('3. Clinical Reasoning')[0].strip()}</div>", unsafe_allow_html=True)
 
-        st.markdown("### Clinical Reasoning")
-        st.markdown(f"<div class='highlight'>{recommendations.split('3. Clinical Reasoning')[1].split('4. Recommended Treatment Plan')[0].strip()}</div>", unsafe_allow_html=True)
+        if '3. Clinical Reasoning' in recommendations:
+            st.markdown("### Clinical Reasoning")
+            st.markdown(f"<div class='highlight'>{recommendations.split('3. Clinical Reasoning')[1].split('4. Recommended Treatment Plan')[0].strip()}</div>", unsafe_allow_html=True)
 
-        st.markdown("### Recommended Treatment Plan")
-        st.markdown(f"<div class='highlight'>{recommendations.split('4. Recommended Treatment Plan')[1].split('5. ICD-10 Code')[0].strip()}</div>", unsafe_allow_html=True)
+        if '4. Recommended Treatment Plan' in recommendations:
+            st.markdown("### Recommended Treatment Plan")
+            st.markdown(f"<div class='highlight'>{recommendations.split('4. Recommended Treatment Plan')[1].split('5. ICD-11 Code')[0].strip()}</div>", unsafe_allow_html=True)
 
-        st.markdown("### ICD-10 Code")
-        st.markdown(f"<div class='highlight'>{recommendations.split('5. ICD-10 Code')[1].split('6. Any Red Flags')[0].strip()}</div>", unsafe_allow_html=True)
+        if '5. ICD-11 Code' in recommendations:
+            st.markdown("### ICD-11 Code")
+            st.markdown(f"<div class='highlight'>{recommendations.split('5. ICD-11 Code')[1].split('6. Any Red Flags')[0].strip()}</div>", unsafe_allow_html=True)
 
-        st.markdown("### Red Flags Requiring Urgent Referral")
-        st.markdown(f"<div class='highlight'>{recommendations.split('6. Any Red Flags')[1].strip()}</div>", unsafe_allow_html=True)
-
-# Chatbot-Like Interaction for Follow-Up Questions
-st.markdown("---")
-st.markdown("<h3 style='text-align: center;'>Ask Follow-Up Questions</h3>", unsafe_allow_html=True)
-
-follow_up_question = st.text_input("Ask a question about the recommendations:")
-if follow_up_question:
-    with st.spinner("Generating response..."):
-        # Add the follow-up question to patient history
-        st.session_state.patient_history.append({"role": "Doctor", "content": follow_up_question})
-
-        # Prepare the follow-up prompt
-        follow_up_prompt = f"""
-        The doctor has asked the following question about your recommendations:
-        {follow_up_question}
-
-        Please provide a detailed and clear response.
-        """
-        follow_up_response = client.chat.completions.create(
-            model="gpt-4",
-            messages=[{"role": "user", "content": follow_up_prompt}]
-        )
-        follow_up_answer = follow_up_response.choices[0].message.content
-
-        # Save the follow-up response to patient history
-        st.session_state.patient_history.append({"role": "AI", "content": follow_up_answer})
-
-    # Display Follow-Up Response
-    st.markdown("---")
-    st.markdown("<h4 style='text-align: center;'>Follow-Up Response</h4>", unsafe_allow_html=True)
-    st.write(follow_up_answer)
-
-# Display Patient History
-st.markdown("---")
-st.markdown("<h3 style='text-align: center;'>Patient History</h3>", unsafe_allow_html=True)
-for entry in st.session_state.patient_history:
-    if entry["role"] == "AI":
-        st.markdown(f"**AI:** {entry['content']}")
-    else:
-        st.markdown(f"**Doctor:** {entry['content']}")
+        if '6. Any Red Flags' in recommendations:
+            st.markdown("### Red Flags Requiring Urgent Referral")
+            st.markdown(f"<div class='highlight'>{recommendations.split('6. Any Red Flags')[1].strip()}</div>", unsafe_allow_html=True)
