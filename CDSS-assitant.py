@@ -83,11 +83,10 @@ st.markdown("""
             content: "";
         }
 
-        /* Ensure no colons after all labels */
-        .stTextArea label,
-        .stSelectbox label,
-        .stTextArea div.stTextInput {
-            display: block;
+        /* Severity options (Mild, Moderate, Severe) */
+        .stRadio div label {
+            color: #FFFFFF !important;  /* Light color for dark mode */
+            font-size: 16px;
         }
 
         /* Text color in light mode should remain black */
