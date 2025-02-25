@@ -19,64 +19,54 @@ else:
 #custom css
 st.markdown("""
     <style>
-        /* Light Mode Styles */
+        /* Background and text colors for light mode */
         body {
             background-color: #F4F4F4;
             color: #000000 !important;
         }
 
-        /* Dark Mode Styles */
+        /* Severity radio buttons - Ensure visibility in light & dark mode  */
+        .stRadio div label {
+            color: #555 !important;  /* All options with color #555 */
+        }
+
+        /* For Dark Mode */
         body[data-testid="stAppViewContainer"] {
             background-color: #121212 !important;  /* Dark background */
             color: #FFFFFF !important;  /* White text */
         }
 
-        /* Ensure text in inputs, text areas, and other elements is visible in both modes */
-        .stTextArea textarea,
-        .stMultiselect div,
-        .stSelectbox select,
-        .stRadio div,
-        .stTextInput input {
-            color: #000000 !important;  /* Black text */
-        }
-
-        /* Dark mode overrides for inputs */
-        body[data-testid="stAppViewContainer"] .stTextArea textarea,
-        body[data-testid="stAppViewContainer"] .stMultiselect div,
-        body[data-testid="stAppViewContainer"] .stSelectbox select,
-        body[data-testid="stAppViewContainer"] .stRadio div,
-        body[data-testid="stAppViewContainer"] .stTextInput input {
-            background-color: #FFFFFF !important;  /* White background */
-            color: #000000 !important;  /* Black text */
-        }
-
-        /* Highlight styling */
-        .highlight {
+        /* Text highlight styling */
+        .highlight { 
             background-color: #A5D6A7; 
             padding: 10px;
             border-radius: 5px;
             color: #000000 !important;  /* Black text */
         }
 
-        /* Ensure radio button labels are visible in both modes */
-        .stRadio div label {
-            color: #555 !important;  /* Gray text for radio buttons */
+        /* Ensure inputs, text areas, and other elements have appropriate text color */
+        .stTextArea textarea,
+        .stMultiselect div,
+        .stSelectbox select,
+        .stRadio div {
+            color: #000000 !important;  /* Default black text */
         }
 
-        /* Dark mode overrides for radio button labels */
-        body[data-testid="stAppViewContainer"] .stRadio div label {
-            color: #FFFFFF !important;  /* White text for radio buttons in dark mode */
+        /* Ensure input boxes have white background and black text in dark mode */
+        body[data-testid="stAppViewContainer"] .stTextArea textarea,
+        body[data-testid="stAppViewContainer"] .stMultiselect div,
+        body[data-testid="stAppViewContainer"] .stSelectbox select,
+        body[data-testid="stAppViewContainer"] .stRadio div {
+            background-color: #FFFFFF !important;
+            color: #000000 !important;
         }
 
-        /* Ensure headers and other text are visible in dark mode */
-        h1, h2, h3, h4, h5, h6 {
-            color: #FFFFFF !important;  /* White text for headers in dark mode */
+        /* Ensure text input fields have white background and black text in dark mode */
+        body[data-testid="stAppViewContainer"] .stTextInput input {
+            background-color: #FFFFFF !important;
+            color: #000000 !important;
         }
-
-        /* Light mode overrides for headers */
-        body h1, body h2, body h3, body h4, body h5, body h6 {
-            color: #000000 !important;  /* Black text for headers in light mode */
-        }
+        
     </style>
 """, unsafe_allow_html=True)
 
